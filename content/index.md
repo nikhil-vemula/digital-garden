@@ -1,5 +1,6 @@
 ---
-title: Welcome to Quartz
+title: Home
+draft: false
+tags:
 ---
-
-Hello world
+This is my personal blog where I write about technology, programming, and other things which I find interesting.
