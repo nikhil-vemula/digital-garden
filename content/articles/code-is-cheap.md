@@ -4,7 +4,7 @@ draft: false
 tags:
 ---
 
-https://nadh.in/blog/code-is-cheap/‌
+[https://nadh.in/blog/code-is-cheap/](https://nadh.in/blog/code-is-cheap/)
 
 ## Parts I Liked
 
