@@ -35,7 +35,13 @@ export const defaultContentPageLayout: PageLayout = {
         { Component: Component.ReaderMode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer(
+      {
+        title: "Explorer",
+        useSavedState: false,
+        folderDefaultState: "collapsed",
+      }
+    ),
   ],
   right: [
     // Component.Graph(),
@@ -59,7 +65,13 @@ export const defaultListPageLayout: PageLayout = {
         { Component: Component.Darkmode() },
       ],
     }),
-    Component.Explorer(),
+    Component.Explorer(
+      {
+        title: "Explorer",
+        useSavedState: false, // This forces the sidebar to refresh on every load
+        folderDefaultState: "collapsed",
+      }
+    ),
   ],
   right: [],
 }
