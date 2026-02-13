@@ -4,7 +4,7 @@ draft: false
 tags:
 ---
 
-[Kailash Nadh](https://nadh.in/) from Zerodha talks about how changing coding landscape due to AI.
+[Kailash Nadh](https://nadh.in/) from Zerodha talks about how coding landscape is changing due to AI.
 
 [https://nadh.in/blog/code-is-cheap/](https://nadh.in/blog/code-is-cheap/)
 
