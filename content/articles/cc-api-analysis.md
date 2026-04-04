@@ -25,6 +25,30 @@ Analysis of HTTP calls made by Claude Code (v2.1.92) during a single session, ca
 - **"Grove"** = privacy consent framework. `grove_enabled` means different things on different endpoints (consent completed vs. data collection preference).
 - **"Dittos"** = mobile app codename. **"Cowork"** = enterprise team mode. **"Compass"** = advisor tool (consult stronger model).
 
+## Minimizing Waste / Cost Optimization
+
+**Batch tasks into a single session.** The 6 startup requests + quota probe + telemetry are fixed costs per session. One session with 10 tasks is far cheaper than 10 sessions with 1 task each.
+
+**Stay within the 1-hour cache window.** The system prompt is cached globally for 1 hour (`scope: global`). Back-to-back tasks within that window pay near-zero for re-sending the ~4k word system prompt. Spreading sessions across hours wastes cache hits.
+
+**Give precise, targeted prompts.** The title-edit took 4 tool-use turns (Glob → Read → Edit → Done), each a separate API call with ~16k tokens re-sent from cache. A prompt with the exact file path (e.g. `"Edit <title> in src/index.html from 'X' to 'Y'"`) skips Glob entirely — 3 turns instead of 4.
+
+**Use `/compact` before context grows large.** Context compression is configured but disabled by default (`tengu_sm_compact: false`). Past ~150k tokens costs spike. Proactively compacting keeps cache-read tokens high and uncached tokens low.
+
+**Use `claude -p` for scripted/automated tasks.** Non-interactive mode skips the 1-token Haiku quota probe and interactive startup checks.
+
+**Avoid Fast Mode unless speed is critical.** "Penguin Mode" uses the same Opus 4.6 model but at **$30/$150 per MTok** (vs. standard rates), billed as extra usage outside your plan's included allocation from the first token.
+
+**Every new session generates a title via Haiku ($0.00041).** Trivial individually, but multiplies across many short sessions.
+
+| Action | Impact |
+|--------|--------|
+| Batch multiple tasks per session | High — amortizes fixed startup cost |
+| Stay within 1h cache window | High — maximizes cache hits |
+| Give precise file paths in prompts | Medium — reduces tool-use turns |
+| Use `claude -p` for automation | Low-medium — skips quota probe |
+| Avoid Fast Mode unless needed | Situational — 2-3x higher rate |
+
 ## High-Level Call Flow
 
 **Startup (6 calls):**
