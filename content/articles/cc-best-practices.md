@@ -6,6 +6,27 @@ tags:
 
 Best practices for getting the most out of Claude Code, based on a deep analysis of every HTTP call it makes during a session, captured via mitmproxy. See [[cc-api-analysis|Claude Code API Call Analysis]] for the full breakdown.
 
+
+## High-Level Workflow
+
+### Implementing a feature with minimal back-and-forth
+
+For any medium-complexity feature, ask Claude to plan before it codes:
+
+> "Before writing any code, give me a step-by-step implementation plan."
+
+Review the plan, correct misunderstandings, then say "go ahead." This catches wrong assumptions at the cheapest point — before any code exists. Fixing a plan takes seconds; fixing a half-built implementation costs turns.
+
+Also ask for tests alongside the implementation:
+
+> "Implement X and write tests that verify the acceptance criteria."
+
+Tests give Claude a self-check mechanism and give you a way to verify correctness without reading every line.
+
+When done, review `git diff` rather than the conversation. Point at specific code if something's off, rather than re-explaining the feature.
+
+The failure mode to avoid: vague prompt → partial implementation → mid-task correction → Claude loses original intent → inconsistent result. The plan step eliminates most of this.
+
 ## Best Practices
 
 ### Give precise, targeted prompts
@@ -45,6 +66,7 @@ Non-interactive mode (`claude -p`) skips the 1-token Haiku quota probe on startu
 ### Avoid Fast Mode unless speed is critical
 
 Fast Mode ("Penguin Mode" internally) uses the **same Opus 4.6 model** — not a different one. It's faster, but billed at $30/$150 per million tokens (input/output) as extra usage, outside your plan's included allocation, from the first token. If you're hitting the session limit, Fast Mode burns through your budget faster without changing the underlying token consumption.
+
 
 ## Summary
 
